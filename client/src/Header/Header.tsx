@@ -8,11 +8,12 @@ export const Header = () => {
 
   const socket = useContext(SocketContext);
   useEffect(() => {
+    console.log('socket client',socket)
     socket?.on("new-noti", (message) => {
       console.log("take message from server",message);
       setNoti(noti + 1);
     });
-  }, [socket]);
+  }, [socket,noti]);
   return (
     <HeaderBox>
       <Button variant="contained" onClick={() => setNoti(noti + 1)}>

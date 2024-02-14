@@ -2,7 +2,7 @@ import { createContext, useEffect, useRef, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
-import { Socket, io } from "socket.io-client";
+import io, { Socket } from "socket.io-client";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
 
 export const wsServer = "http://localhost:5000";
@@ -11,36 +11,34 @@ export const SocketContextAdmin = createContext<Socket<
   DefaultEventsMap
 > | null>(null);
 export function App() {
-  const socket = useRef<Socket<DefaultEventsMap, DefaultEventsMap> | null>(
-    null
-  );
+  const [socketAdmin, setSocketAdmin] = useState<Socket<
+    DefaultEventsMap,
+    DefaultEventsMap
+  > | null>(null);
 
   const handleClick = () => {
-    if (socket.current) {
-      console.log("socket current", socket.current);
-      socket.current.emit("send-noti", "send this noti to all user");
+    if (socketAdmin) {
+      socketAdmin.emit("send-noti", "send this noti to all user");
     }
   };
 
   useEffect(() => {
-    if (!socket.current) {
-      socket.current = io(wsServer);
+    if (!socketAdmin) {
+      let newSocketAdmin = io(wsServer);
+      setSocketAdmin(newSocketAdmin);
     }
   }, []);
 
   useEffect(() => {
-    // if (socket.current) {
-    //   socket.current.on("new-noti", (message) => {
-    //     console.log("recive my noti", message);
-    //   });
-    // }
-    socket.current.on("new-noti", (message) => {
-      console.log("recive my noti", message);
-    });
-  }, [socket.current]);
+    if (socketAdmin) {
+      socketAdmin.on("new-noti", (message) => {
+        console.log("recive my noti", message);
+      });
+    }
+  }, [socketAdmin]);
 
   return (
-    <SocketContextAdmin.Provider value={socket.current}>
+    <SocketContextAdmin.Provider value={socketAdmin}>
       <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />

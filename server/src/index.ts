@@ -39,6 +39,10 @@ io.on("connection", (socket) => {
   console.log("new client join");
   socket.on('send-noti',(message)=>{
     console.log(message)
-    socket.broadcast.emit('new-noti', message)
+    console.log('socket',socket.client)
+
+    
+    // socket.emit('new-noti', message)
+    io.sockets.sockets.forEach((socket)=>socket.emit('new-noti',message))
   })
 });

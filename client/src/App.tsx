@@ -9,16 +9,15 @@ export const SocketContext = createContext<Socket<
 > | null>(null);
 export function App() {
   const wsServer = "http://localhost:5000";
-  const [count, setCount] = useState(0);
-  const socket = useRef<Socket<DefaultEventsMap, DefaultEventsMap> | null>(
-    null
-  );
+  const [socket, setSocket] = useState<Socket<DefaultEventsMap, DefaultEventsMap> | null>(null)
 
   useEffect(() => {
-    socket.current = io(wsServer);
+    let socket = io(wsServer);
+    setSocket(socket)
+    console.log(socket)
   }, []);
   return (
-    <SocketContext.Provider value={socket.current}>
+    <SocketContext.Provider value={socket}>
       <Header />
     </SocketContext.Provider>
   );
