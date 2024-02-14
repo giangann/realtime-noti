@@ -5,14 +5,20 @@
   "main": "index2.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "migration:generate": "typeorm migration:create -n",
+    "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run",
+    "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.4.4",
     "express": "^4.18.2",
+    "mysql": "2.16.0",
     "socket.io": "^4.7.4",
+    "typeorm": "0.2.37",
     "typescript": "^5.3.3"
   },
   "devDependencies": {

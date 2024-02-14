@@ -1,8 +1,9 @@
 import core from "express-serve-static-core";
 import cors from "cors";
 import express from "express";
+
 export const createHttpServer = () => {
-  const port = 5000;
+  const port = process.env.PORT
   const app = express();
   app.use(
     cors({
