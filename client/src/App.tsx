@@ -3,7 +3,7 @@ import "./App.css";
 import io, { Socket } from "socket.io-client";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
 import { Header } from "./Header/Header";
-export const FormContext = createContext<Socket<
+export const SocketContext = createContext<Socket<
   DefaultEventsMap,
   DefaultEventsMap
 > | null>(null);
@@ -18,8 +18,8 @@ export function App() {
     socket.current = io(wsServer);
   }, []);
   return (
-    <FormContext.Provider value={socket.current}>
+    <SocketContext.Provider value={socket.current}>
       <Header />
-    </FormContext.Provider>
+    </SocketContext.Provider>
   );
 }

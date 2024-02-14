@@ -1,7 +1,27 @@
+import MailIcon from "@mui/icons-material/Mail";
+import { Button } from "@mui/material";
+import Badge from "@mui/material/Badge";
+import { useContext, useEffect, useState } from "react";
+import { SocketContext } from "../App";
 export const Header = () => {
+  const [noti, setNoti] = useState(0);
+
+  const socket = useContext(SocketContext);
+  useEffect(() => {
+    socket?.on("new-noti", (message) => {
+      console.log("take message from server",message);
+      setNoti(noti + 1);
+    });
+  }, [socket]);
   return (
     <HeaderBox>
+      <Button variant="contained" onClick={() => setNoti(noti + 1)}>
+        Noti
+      </Button>
       <h3 style={{ color: "white" }}>Thông báo</h3>
+      <Badge badgeContent={noti} color="secondary">
+        <MailIcon color="action" />
+      </Badge>
     </HeaderBox>
   );
 };
