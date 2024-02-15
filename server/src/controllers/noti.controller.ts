@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { INotiCreate } from "noti.interface";
-import notiService from "noti.service";
+import notiService from "../services/noti.service";
 import { IUserRecord } from "user.interface";
-import userService from "user.service";
+import userService from "../services/user.service";
 
 const create = async (req: Request, res: Response) => {
   const noti: INotiCreate = req.body;

@@ -1,5 +1,5 @@
 import { Not, getRepository } from "typeorm";
-import { Noti } from "noti.entity";
+import { Noti } from "../entities/noti.entity";
 import { INotiCreate, INotiRecord, INotiUpdate } from "noti.interface";
 
 const list = async (params: Partial<INotiRecord>) => {

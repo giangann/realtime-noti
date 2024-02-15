@@ -1,6 +1,6 @@
 import { ObjWithId } from "common.interface";
 import { getRepository } from "typeorm";
-import { User } from "user.entity";
+import { User } from "../entities/user.entity";
 
 const detail = async (params: ObjWithId) => {
   const { id } = params;

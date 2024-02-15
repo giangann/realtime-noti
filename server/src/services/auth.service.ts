@@ -1,5 +1,5 @@
 import { getRepository } from "typeorm";
-import { User } from "user.entity";
+import { User } from "../entities/user.entity";
 import { IUserRecord } from "user.interface";
 
 interface IAuth extends Pick<IUserRecord, "username" | "password"> {}
