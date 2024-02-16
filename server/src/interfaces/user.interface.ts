@@ -4,6 +4,7 @@ export interface IUserRecord {
   id: number;
   username: string;
   password: string;
+  isAdmin: boolean;
 }
 export interface IUserEntity extends IUserRecord {}
 

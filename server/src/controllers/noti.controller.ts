@@ -20,7 +20,7 @@ const listMyNoti = async (
   try {
     if (req.user) {
       const listNoti = await notiService.list({ to_user_id: req.user.id });
-
+      console.log('list noti', listNoti)
       const notiPromise = await Promise.all(
         listNoti.map(async (noti) => {
           const fromUser = await userService.detail({ id: noti.id });

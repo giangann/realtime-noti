@@ -2,7 +2,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import { Button } from "@mui/material";
 import Badge from "@mui/material/Badge";
 import { useContext, useEffect, useState } from "react";
-import { SocketContext } from "../App";
+import { SocketContext } from "../Home/Home";
 export const Header = () => {
   const [noti, setNoti] = useState(0);
 

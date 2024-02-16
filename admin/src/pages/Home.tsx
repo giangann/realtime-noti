@@ -3,8 +3,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import { AuthContext } from "../App";
 import "../App.css";
-import reactLogo from "../assets/react.svg";
-import viteLogo from "/vite.svg";
+import { ListUser } from "./ListUser";
+import { MyInfo } from "./MyInfo";
 
 export const wsServer = "http://localhost:5000";
 export const SocketContextAdmin = createContext<Socket<
@@ -23,6 +23,8 @@ export const Home = () => {
       socketAdmin.emit("send-noti", "send this noti to all user");
     }
   };
+
+  const sendNotiHttp = async () => {};
 
   useEffect(() => {
     if (!socketAdmin) {
@@ -44,24 +46,21 @@ export const Home = () => {
       <div>
         <div className="card">
           <button onClick={auth.onLogout}>Log out</button>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test HMR
-          </p>
         </div>
-        <a href="#">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="#">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+
+        <MyInfo />
       </div>
-      <h1>Vite + React</h1>
+
+      <ListUser/>
       <div className="card">
         <button onClick={handleClick}>send noti</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      </div>
+      <div className="card">
+        <button onClick={sendNotiHttp}>send HTTP noti</button>
       </div>
     </SocketContextAdmin.Provider>
   );
 };
+
+
+

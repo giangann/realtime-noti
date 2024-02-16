@@ -1,12 +1,9 @@
 import {
   Column,
   Entity,
-  PrimaryGeneratedColumn,
-  Unique,
-  OneToMany,
-  OneToOne,
   JoinColumn,
-  TableForeignKey,
+  OneToOne,
+  PrimaryGeneratedColumn
 } from "typeorm";
 import { BaseEntity } from "./base.entity";
 import { User } from "./user.entity";
@@ -34,7 +31,7 @@ export class Noti extends BaseEntity {
   @OneToOne(() => User)
   from_user: User;
 
-  @JoinColumn({ name: "from_user_id", referencedColumnName: "id" })
+  @JoinColumn({ name: "to_user_id", referencedColumnName: "id" })
   @OneToOne(() => User)
   to_user: User;
 }

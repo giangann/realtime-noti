@@ -43,7 +43,6 @@ export function App() {
 
   return (
     <AuthContext.Provider value={{ onLogin, onLogout, user }}>
-      {JSON.stringify(user)}
       <div>{user ? <Home /> : <Login />}</div>
     </AuthContext.Provider>
   );

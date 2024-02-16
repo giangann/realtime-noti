@@ -8,14 +8,12 @@ export const isOurUser = async (
   next: NextFunction
 ) => {
   try {
-    console.log("auth middleware reach");
     const cookie = req.headers.cookie;
     if (!cookie) {
       return ServerResponse.error(res, "No cookie found, please login");
     }
 
     const userId = cookie.split("=")[1];
-    console.log("our cookie", cookie, userId);
     const foundUser = await userService.detail({ id: parseInt(userId) });
     if (!foundUser) return ServerResponse.error(res, "UnAuthorized");
 

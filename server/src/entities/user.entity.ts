@@ -2,10 +2,7 @@ import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
-  Unique,
-  OneToMany,
-  OneToOne,
-  JoinColumn,
+  Unique
 } from "typeorm";
 import { BaseEntity } from "./base.entity";
 
@@ -24,4 +21,7 @@ export class User extends BaseEntity {
 
   @Column({ length: 100, nullable: false, select: true })
   password: string;
+
+  @Column()
+  isAdmin: boolean;
 }

@@ -1,17 +1,49 @@
-import { createContext, useEffect, useRef, useState } from "react";
-import "./App.css";
-import io, { Socket } from "socket.io-client";
-import { DefaultEventsMap } from "@socket.io/component-emitter";
-import { Header } from "./Header/Header";
-export const SocketContext = createContext<Socket<
-  DefaultEventsMap,
-  DefaultEventsMap
-> | null>(null);
+import { createContext, useEffect, useState } from "react";
+import { Home } from "./Home/Home";
+import { Login } from "./Login/Login";
+import { getApi } from "./request/request";
+import { IUser } from "./types/user";
+
+export type TAuth = {
+  onLogin: (user: IUser) => void;
+  onLogout: () => void;
+  user: IUser | null;
+};
+
+export const AuthContext = createContext<TAuth>({
+  onLogin: () => {},
+  onLogout: () => {},
+  user: null,
+});
+
 export function App() {
-  const wsServer = "http://localhost:5000";
+  const [user, setUser] = useState<IUser | null>(null);
+
+  const onLogin = (user: IUser) => {
+    setUser(user);
+  };
+  const onLogout = async () => {
+    setUser(null);
+    const logoutResponse = await getApi("auth/logout");
+    if (logoutResponse.success) console.log("Logout success");
+    else console.log(logoutResponse.error.message);
+  };
+
+  useEffect(() => {
+    async function fetchMe() {
+      const fetchMeResponse = await getApi<IUser>("auth/me");
+      if (fetchMeResponse.success) onLogin(fetchMeResponse.data);
+      else console.log(fetchMeResponse.error.message);
+    }
+
+    fetchMe();
+  }, []);
+  // if dont have empty array above, it will get infinity loop
+  // because have set state inside useEffect
+
   return (
-    <SocketContext.Provider value={io(wsServer)}>
-      <Header />
-    </SocketContext.Provider>
+    <AuthContext.Provider value={{ onLogin, onLogout, user }}>
+      <div>{user ? <Home /> : <Login />}</div>
+    </AuthContext.Provider>
   );
 }

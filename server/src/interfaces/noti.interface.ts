@@ -13,7 +13,8 @@ export interface INotiRecord {
 }
 
 export interface INotiEntity extends INotiRecord {
-  user: IUserRecord;
+  from_user: IUserRecord;
+  to_user: IUserRecord;
 }
 
 export interface INotiCreate extends TCreateRecord<INotiRecord> {}
