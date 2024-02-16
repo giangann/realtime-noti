@@ -7,7 +7,7 @@ import { NotiContext } from "./Home";
 export const ListUser = () => {
   const [listUser, setListUser] = useState<IUser[]>([]);
   const [selectedUserId, setSelectedUserId] = useState(-1);
-  const sendNotiHTTP = useContext(NotiContext).sendNoti;
+  const sendNoti = useContext(NotiContext).sendNoti;
   const handleChangeUser = (userId: number) => {
     setSelectedUserId(userId);
   };
@@ -40,7 +40,7 @@ export const ListUser = () => {
       <div className="card">
         <button
           disabled={selectedUserId < 0}
-          onClick={() => sendNotiHTTP(selectedUserId)}
+          onClick={() => sendNoti(selectedUserId)}
         >
           send HTTP noti
         </button>

@@ -23,12 +23,6 @@ export const Home = () => {
   > | null>(null);
   const auth = useContext(AuthContext);
 
-  const handleClick = () => {
-    if (socketAdmin) {
-      socketAdmin.emit("send-noti", "send this noti to all user");
-    }
-  };
-
   const sendNotiHttp = async (toUser: number) => {
     const notiData = {
       from_user_id: auth.user?.id,
@@ -41,9 +35,26 @@ export const Home = () => {
     else console.log(sendNotiResponse.error.message);
   };
 
+  const sendNotiWS = (toUser: number) => {
+    if (socketAdmin) {
+      socketAdmin?.emit("send-noti", {
+        from_user_id: auth.user?.id,
+        to_user_id: toUser,
+        content: "Test content noti",
+      });
+    }
+  };
+
+  const sendNoti = async (toUser: number) => {
+    sendNotiWS(toUser);
+    await sendNotiHttp(toUser);
+  };
+
   useEffect(() => {
     if (!socketAdmin) {
-      let newSocketAdmin = io(wsServer);
+      let newSocketAdmin = io(wsServer).emit("parse-user", {
+        user: auth.user,
+      });
       setSocketAdmin(newSocketAdmin);
     }
   }, []);
@@ -58,7 +69,7 @@ export const Home = () => {
 
   return (
     <SocketContextAdmin.Provider value={socketAdmin}>
-      <NotiContext.Provider value={{ sendNoti: sendNotiHttp }}>
+      <NotiContext.Provider value={{ sendNoti: sendNoti }}>
         <div>
           <div className="card">
             <button onClick={auth.onLogout}>Log out</button>
@@ -68,9 +79,6 @@ export const Home = () => {
         </div>
 
         <ListUser />
-        <div className="card">
-          <button onClick={handleClick}>send noti</button>
-        </div>
       </NotiContext.Provider>
     </SocketContextAdmin.Provider>
   );

@@ -8,10 +8,20 @@ export const createWebSocket = (httpServer: http.Server) => {
   io.on("connection", (socket) => {
     console.log("new client connect");
 
-    socket.on("send-noti", (message) => {
-      io.sockets.sockets.forEach((client) => {
-        client.emit("new-noti", message);
+    socket.on("send-noti", async (message) => {
+      const toUserId = message.to_user_id;
+
+      const clients = await io.fetchSockets();
+      clients.forEach((client) => {
+        if (client.data.user.id === toUserId) {
+          client.emit("new-noti", message);
+        }
       });
+    });
+
+    socket.on("parse-user", (message) => {
+      console.log(message);
+      socket.data.user = message.user;
     });
   });
   return io;

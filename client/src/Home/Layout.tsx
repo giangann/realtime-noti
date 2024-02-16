@@ -1,8 +1,8 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../App";
 import { INoti } from "../types/noti";
-import { getApi } from "../request/request";
+import { NotiContext } from "./Home";
 
 // Layout for fetch noti, allow scroll, use fetch pagination if can
 export const Layout = () => {
@@ -17,16 +17,8 @@ export const Layout = () => {
 };
 
 const NotiBox = () => {
-  const [listNoti, setListNoti] = useState<INoti[]>([]);
+  const listNoti = useContext(NotiContext);
 
-  useEffect(() => {
-    async function fetchNotis() {
-      const fetchNotisResponse = await getApi<INoti[]>("noti");
-      if (fetchNotisResponse.success) setListNoti(fetchNotisResponse.data);
-      else console.log(fetchNotisResponse.error.message);
-    }
-    fetchNotis();
-  }, []);
   return (
     <Box>
       {listNoti && listNoti.length ? (
