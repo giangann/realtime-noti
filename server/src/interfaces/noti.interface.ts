@@ -3,7 +3,7 @@ import { TCreateRecord, TUpdateRecord } from "generic.type";
 import { IUserRecord } from "user.interface";
 
 export interface INotiRecord {
-  id: "string";
+  id: string;
   from_user_id: number;
   to_user_id: number;
   content: string;

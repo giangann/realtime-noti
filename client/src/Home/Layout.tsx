@@ -25,24 +25,26 @@ const NotiBox = () => {
       if (fetchNotisResponse.success) setListNoti(fetchNotisResponse.data);
       else console.log(fetchNotisResponse.error.message);
     }
-    fetchNotis()
+    fetchNotis();
   }, []);
   return (
     <Box>
       {listNoti && listNoti.length ? (
-        listNoti.map((noti) => <NotiBoxItem />)
+        listNoti.map((noti) => <NotiBoxItem {...noti} />)
       ) : (
-        <Typography variant="h2" color="red">No noti</Typography>
+        <Typography variant="h2" color="red">
+          No noti
+        </Typography>
       )}
     </Box>
   );
 };
 
-const NotiBoxItem = () => {
+const NotiBoxItem = ({ content, createdAt, from_user, isRead }: INoti) => {
   return (
     <Box
       sx={{
-        backgroundColor: "yellowgreen",
+        backgroundColor: isRead ? "yellowgreen" : "#cccccc",
         height: 100,
         width: "100%",
         marginBottom: 2,
@@ -51,13 +53,13 @@ const NotiBoxItem = () => {
     >
       <Grid container>
         <Grid item xs={6}>
-          <Typography>{"Từ Admin"}</Typography>
+          <Typography>{`Từ ${from_user.username}`}</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography>{"22/04/2024 16:00"}</Typography>
+          <Typography>{createdAt as string}</Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography>{"Nội dung: Thông báo quan trọng, ......"}</Typography>
+          <Typography>{`Nội dung: ${content}, ......`}</Typography>
         </Grid>
       </Grid>
     </Box>

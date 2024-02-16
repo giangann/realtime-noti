@@ -5,12 +5,17 @@ import { AuthContext } from "../App";
 import "../App.css";
 import { ListUser } from "./ListUser";
 import { MyInfo } from "./MyInfo";
+import { postApi } from "../request/request";
+import { INoti } from "../types/noti";
 
 export const wsServer = "http://localhost:5000";
 export const SocketContextAdmin = createContext<Socket<
   DefaultEventsMap,
   DefaultEventsMap
 > | null>(null);
+export const NotiContext = createContext<{
+  sendNoti: (toUser: number) => void;
+}>({ sendNoti: () => {} });
 export const Home = () => {
   const [socketAdmin, setSocketAdmin] = useState<Socket<
     DefaultEventsMap,
@@ -24,7 +29,17 @@ export const Home = () => {
     }
   };
 
-  const sendNotiHttp = async () => {};
+  const sendNotiHttp = async (toUser: number) => {
+    const notiData = {
+      from_user_id: auth.user?.id,
+      to_user_id: toUser,
+      content: "Test content noti",
+    };
+    const sendNotiResponse = await postApi<INoti>("noti", notiData);
+
+    if (sendNotiResponse.success) console.log("send noti success");
+    else console.log(sendNotiResponse.error.message);
+  };
 
   useEffect(() => {
     if (!socketAdmin) {
@@ -43,24 +58,20 @@ export const Home = () => {
 
   return (
     <SocketContextAdmin.Provider value={socketAdmin}>
-      <div>
-        <div className="card">
-          <button onClick={auth.onLogout}>Log out</button>
+      <NotiContext.Provider value={{ sendNoti: sendNotiHttp }}>
+        <div>
+          <div className="card">
+            <button onClick={auth.onLogout}>Log out</button>
+          </div>
+
+          <MyInfo />
         </div>
 
-        <MyInfo />
-      </div>
-
-      <ListUser/>
-      <div className="card">
-        <button onClick={handleClick}>send noti</button>
-      </div>
-      <div className="card">
-        <button onClick={sendNotiHttp}>send HTTP noti</button>
-      </div>
+        <ListUser />
+        <div className="card">
+          <button onClick={handleClick}>send noti</button>
+        </div>
+      </NotiContext.Provider>
     </SocketContextAdmin.Provider>
   );
 };
-
-
-
