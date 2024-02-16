@@ -1,11 +1,11 @@
 import { Response } from "express";
 
 export class ServerResponse {
-  static error(res: Response, error: string, status: number = 400) {
+  static error(res: Response, errorMessage: string, status: number = 400) {
     res.status(status);
     res.json({
       success: false,
-      error: { name: "Backend Error", message: error },
+      error: { name: "Backend Error", message: errorMessage },
     });
   }
 
