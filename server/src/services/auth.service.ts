@@ -8,16 +8,22 @@ const login = async (params: IAuth) => {
   const { username, password } = params;
 
   const user = await getRepository(User).findOne({ username: username });
-
-  if (!user) return { error: { message: "Wrong username" } };
-  else {
-    if (password === user.password) return { data: user };
-    else return { error: { message: "Wrong password" } };
-  }
+  console.log(
+    user,
+    password,
+    user.password,
+    user.password === password,
+    user.password == password
+  );
+  return user;
 };
 
 const register = async (params: IAuth) => {
-  const createdUser = await getRepository(User).save({ ...params });
+  const newUser = new User();
+  newUser.username = params.username;
+  newUser.password = params.password;
+
+  const createdUser = await getRepository(User).save(newUser);
 
   return createdUser;
 };

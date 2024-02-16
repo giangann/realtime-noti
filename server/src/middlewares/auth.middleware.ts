@@ -1,22 +1,28 @@
 import { NextFunction, Request, Response } from "express";
 import userService from "../services/user.service";
+import { ServerResponse } from "../ultils/server-response.ultil";
 
 export const isOurUser = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const cookie = req.headers.cookie;
+  try {
+    console.log("auth middleware reach");
+    const cookie = req.headers.cookie;
+    if (!cookie) {
+      return ServerResponse.error(res, "No cookie found, please login");
+    }
 
-  const userId = cookie.split("=")[1];
+    const userId = cookie.split("=")[1];
+    console.log("our cookie", cookie, userId);
+    const foundUser = await userService.detail({ id: parseInt(userId) });
+    if (!foundUser) return ServerResponse.error(res, "UnAuthorized");
 
-  console.log("our cookie", cookie, userId);
-
-  const foundUser = await userService.detail({ id: userId });
-  if (!foundUser)
-    return res.status(400).json({ error: { message: "UnAuthorized" } });
-
-  // @ts-ignore
-  req.user = foundUser;
-  next();
+    // @ts-ignore
+    req.user = foundUser;
+    next();
+  } catch (e) {
+    ServerResponse.error(res, e?.message || "Backend Err");
+  }
 };
