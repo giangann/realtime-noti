@@ -46,7 +46,7 @@ export const Home = () => {
   };
 
   const sendNoti = async (toUser: number) => {
-    sendNotiWS(toUser);
+    // sendNotiWS(toUser);
     await sendNotiHttp(toUser);
   };
 

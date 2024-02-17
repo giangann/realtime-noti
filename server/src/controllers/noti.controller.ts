@@ -5,12 +5,18 @@ import { IUserRecord } from "user.interface";
 import userService from "../services/user.service";
 import { ServerResponse } from "../ultils/server-response.ultil";
 import { Sanitize } from "../ultils/sanitize.ultil";
+import { wsServerGlob } from "../index";
+import notiWebsocket from "../websockets/noti.websocket";
 
 const create = async (req: Request, res: Response) => {
   try {
     const noti: INotiCreate = req.body;
     const notiCreated = await notiService.create({ ...noti });
 
+    await notiWebsocket.sendNotiToUser(
+      notiCreated.to_user_id,
+      "this is noti from controller"
+    );
     return ServerResponse.response(res, notiCreated);
   } catch (e) {
     return ServerResponse.error(res, e.name || "Server err");
@@ -23,6 +29,7 @@ const listMyNoti = async (
 ) => {
   try {
     if (req.user) {
+      console.log(wsServerGlob);
       const listNoti = await notiService.list({ to_user_id: req.user.id });
       const notiPromise = await Promise.all(
         listNoti.map(async (noti) => {
