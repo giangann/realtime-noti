@@ -5,6 +5,7 @@ import { createWebSocket } from "./ws-server";
 export const loadApp = async () => {
   const httpServer = createHttpServer();
   const wsServer = createWebSocket(httpServer);
+  global.wsServerGlob = wsServer
   await connectDatabase();
   return {
     httpServer,

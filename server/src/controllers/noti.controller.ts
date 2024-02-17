@@ -1,11 +1,10 @@
 import { Request, Response } from "express";
 import { INotiCreate } from "noti.interface";
-import notiService from "../services/noti.service";
 import { IUserRecord } from "user.interface";
+import notiService from "../services/noti.service";
 import userService from "../services/user.service";
-import { ServerResponse } from "../ultils/server-response.ultil";
 import { Sanitize } from "../ultils/sanitize.ultil";
-import { wsServerGlob } from "../index";
+import { ServerResponse } from "../ultils/server-response.ultil";
 import notiWebsocket from "../websockets/noti.websocket";
 
 const create = async (req: Request, res: Response) => {
@@ -29,7 +28,6 @@ const listMyNoti = async (
 ) => {
   try {
     if (req.user) {
-      console.log(wsServerGlob);
       const listNoti = await notiService.list({ to_user_id: req.user.id });
       const notiPromise = await Promise.all(
         listNoti.map(async (noti) => {

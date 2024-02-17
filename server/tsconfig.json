@@ -131,7 +131,8 @@
         "src/middlewares/*"
       ]
     },
-    "lib": ["es2015", "es5", "es6", "dom"]
+    "lib": ["es2015", "es5", "es6", "dom"],
+    "typeRoots": ["./node_modules/@types","./src/types"]
   },
   "include": ["src/**/*"]
 }
