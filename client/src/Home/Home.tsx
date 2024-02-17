@@ -21,7 +21,7 @@ export const Home = () => {
   const auth = useContext(AuthContext);
 
   useEffect(() => {
-    wsServer.emit("parse-user", { user: auth.user });
+    wsServer.emit("parseUser", auth.user);
   }, []);
   useEffect(() => {
     async function fetchNotis() {
@@ -38,7 +38,7 @@ export const Home = () => {
       if (fetchNotisResponse.success) setListNoti(fetchNotisResponse.data);
       else console.log(fetchNotisResponse.error.message);
     }
-    wsServer.on("new-noti", async (message) => await fetchNotis());
+    wsServer.on("newNoti", async (message) => await fetchNotis());
   }, []);
 
   return (

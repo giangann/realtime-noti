@@ -42,7 +42,7 @@ export const ListUser = () => {
           disabled={selectedUserId < 0}
           onClick={() => sendNoti(selectedUserId)}
         >
-          send HTTP noti
+          {"send HTTP & RealTime Noti"}
         </button>
       </div>
     </Box>

@@ -12,10 +12,9 @@ const create = async (req: Request, res: Response) => {
     const noti: INotiCreate = req.body;
     const notiCreated = await notiService.create({ ...noti });
 
-    await notiWebsocket.sendNotiToUser(
-      notiCreated.to_user_id,
-      "this is noti from controller"
-    );
+    const fromUser = await userService.detail({ id: notiCreated.from_user_id });
+    notiCreated.from_user = fromUser;
+    await notiWebsocket.sendNotiToUser(notiCreated.to_user_id, notiCreated);
     return ServerResponse.response(res, notiCreated);
   } catch (e) {
     return ServerResponse.error(res, e.name || "Server err");

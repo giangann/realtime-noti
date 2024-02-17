@@ -17,6 +17,13 @@ export interface INotiEntity extends INotiRecord {
   to_user: IUserRecord;
 }
 
+export interface INotiRealtime {
+  content: string;
+  from_user: {
+    username: string;
+  };
+}
+
 export interface INotiCreate extends TCreateRecord<INotiRecord> {}
 export interface INotiUpdate extends TUpdateRecord<INotiRecord> {}
 export interface INotiDelete extends ObjWithId {}

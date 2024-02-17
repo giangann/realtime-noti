@@ -1,14 +1,9 @@
 /* eslint-disable no-var */
 
-import { Server } from "socket.io";
-import { DefaultEventsMap } from "socket.io/dist/typed-events";
+import { TWsServer } from "./socket";
 
 declare global {
-  var wsServerGlob: Server<
-    DefaultEventsMap,
-    DefaultEventsMap,
-    DefaultEventsMap,
-    any
-  >;
+  var wsServerGlob: TWsServer;
 }
-export {};
+export { };
+

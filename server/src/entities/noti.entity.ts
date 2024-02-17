@@ -3,7 +3,7 @@ import {
   Entity,
   JoinColumn,
   OneToOne,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
 } from "typeorm";
 import { BaseEntity } from "./base.entity";
 import { User } from "./user.entity";
@@ -24,7 +24,7 @@ export class Noti extends BaseEntity {
   @Column()
   content: string;
 
-  @Column()
+  @Column({ default: false })
   isRead: boolean;
 
   @JoinColumn({ name: "from_user_id", referencedColumnName: "id" })
